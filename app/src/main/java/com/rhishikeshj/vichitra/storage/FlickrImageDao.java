@@ -6,6 +6,8 @@ import android.arch.persistence.room.Delete;
 import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.Query;
 
+import com.rhishikeshj.vichitra.models.FlickrImage;
+
 import java.util.List;
 
 /**
@@ -15,11 +17,11 @@ import java.util.List;
 @Dao
 public interface FlickrImageDao {
     @Insert
-    void addImages(FlickrResult... newImages);
+    void addImages(List<FlickrImage> newImages);
 
     @Delete
-    void deleteImages(FlickrResult... images);
+    void deleteImages(List<FlickrImage> images);
 
     @Query("select * from flickr_images where query like :query")
-    LiveData<List<FlickrResult>> getAllImages(String query);
+    LiveData<List<FlickrImage>> getAllImages(String query);
 }

@@ -1,20 +1,26 @@
 package com.rhishikeshj.vichitra;
 
-import android.arch.persistence.room.Room;
+import android.arch.lifecycle.Observer;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.view.View;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
-import com.rhishikeshj.vichitra.storage.ImageDatabase;
+import com.rhishikeshj.vichitra.managers.ImageSearchManager;
+import com.rhishikeshj.vichitra.models.FlickrImage;
+import com.rhishikeshj.vichitra.viewmodels.ImageSearchViewModel;
+
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -44,8 +50,16 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        ImageDatabase db = Room.databaseBuilder(getApplicationContext(),
-                ImageDatabase.class, "database-name").build();
+        ImageSearchManager searchManager = new ImageSearchManager(getApplicationContext());
+        ImageSearchViewModel imageSearchViewModel = new ImageSearchViewModel(searchManager);
+        imageSearchViewModel.getImagesForQuery("cat").observe(this, new Observer<List<FlickrImage>>() {
+            @Override
+            public void onChanged(@Nullable List<FlickrImage> flickrImages) {
+                for (FlickrImage image : flickrImages) {
+                    Log.d("MainActivity", "Image is " + image.title);
+                }
+            }
+        });
     }
 
     @Override
