@@ -45,4 +45,8 @@ public class FlickrImage {
 
     @SerializedName("tags")
     public String tags;
+
+    public String getThumbnailLink() {
+        return imageInfo.get("m");
+    }
 }

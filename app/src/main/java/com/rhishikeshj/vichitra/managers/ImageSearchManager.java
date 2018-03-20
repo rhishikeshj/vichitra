@@ -40,12 +40,12 @@ public class ImageSearchManager implements ImageSearchNetworkListener {
 
     @Override
     public void imagesFetchedForQuery(List<FlickrImage> images, String query) {
+        imageDatabase.flickrImageDao().deleteImages(query);
         for (FlickrImage flickrImage : images) {
             if (flickrImage != null) {
                 flickrImage.query = query;
             }
         }
-
         imageDatabase.flickrImageDao().addImages(images);
     }
 
