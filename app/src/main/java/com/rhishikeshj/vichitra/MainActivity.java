@@ -1,6 +1,7 @@
 package com.rhishikeshj.vichitra;
 
 import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
@@ -15,6 +16,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.bumptech.glide.Glide;
 import com.rhishikeshj.vichitra.managers.ImageSearchManager;
 import com.rhishikeshj.vichitra.models.FlickrImage;
 import com.rhishikeshj.vichitra.ui.AutoFitGridLayoutManager;
@@ -22,6 +24,7 @@ import com.rhishikeshj.vichitra.ui.FlickrImageAdapter;
 import com.rhishikeshj.vichitra.viewmodels.ImageSearchViewModel;
 
 import java.util.List;
+
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -41,12 +44,19 @@ public class MainActivity extends AppCompatActivity
         recyclerView.setHasFixedSize(true);
 
         // use a linear layout manager
-        layoutManager = new AutoFitGridLayoutManager(this, 500);
+        layoutManager = new AutoFitGridLayoutManager(this, 200);
         recyclerView.setLayoutManager(layoutManager);
 
         // specify an adapter (see also next example)
-        adapter = new FlickrImageAdapter();
+        adapter = new FlickrImageAdapter(this);
         recyclerView.setAdapter(adapter);
+        recyclerView.setRecyclerListener(new RecyclerView.RecyclerListener() {
+            @Override
+            public void onViewRecycled(RecyclerView.ViewHolder holder) {
+                FlickrImageAdapter.ViewHolder photoViewHolder = (FlickrImageAdapter.ViewHolder) holder;
+                Glide.with(MainActivity.this).clear(photoViewHolder.imageView);
+            }
+        });
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -61,7 +71,8 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         ImageSearchManager searchManager = new ImageSearchManager(getApplicationContext());
-        ImageSearchViewModel imageSearchViewModel = new ImageSearchViewModel(searchManager);
+        ImageSearchViewModel imageSearchViewModel = ViewModelProviders.of(this).get(ImageSearchViewModel.class);
+        imageSearchViewModel.setImageSearchManager(searchManager);
         imageSearchViewModel.getImagesForQuery("cat").observe(this, new Observer<List<FlickrImage>>() {
             @Override
             public void onChanged(@Nullable List<FlickrImage> flickrImages) {
