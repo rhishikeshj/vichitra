@@ -1,5 +1,7 @@
 package com.rhishikeshj.vichitra.managers;
 
+import android.util.Log;
+
 import com.rhishikeshj.vichitra.models.FlickrImage;
 import com.rhishikeshj.vichitra.services.ImageService;
 
@@ -42,7 +44,9 @@ public class ImageSearchNetworkManager {
             @Override
             public void run() {
                 List<FlickrImage> images = imageService.getImagesForQuery(query);
+                Log.d("Rhi", "DONE !");
                 if (listener != null) {
+                    Log.d("Rhi", "Non null listener !");
                     if (images.size() > 0) {
                         listener.imagesFetchedForQuery(images, query);
                     } else {

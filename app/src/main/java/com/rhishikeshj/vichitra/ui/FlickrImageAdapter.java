@@ -1,6 +1,7 @@
 package com.rhishikeshj.vichitra.ui;
 
 import android.app.Activity;
+import android.app.DialogFragment;
 import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -9,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.rhishikeshj.vichitra.GlideApp;
+import com.rhishikeshj.vichitra.ImageDetailFragment;
 import com.rhishikeshj.vichitra.R;
 import com.rhishikeshj.vichitra.models.FlickrImage;
 
@@ -26,14 +28,20 @@ public class FlickrImageAdapter extends RecyclerView.Adapter<FlickrImageAdapter.
     // Complex data items may need more than one view per item, and
     // you provide access to all the views for a data item in a view holder
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        // each data item is just a string in this case
+        private FlickrImage image;
+
         public ImageView imageView;
 
-        FlickrImage image;
-
-        public ViewHolder(View v) {
+        public ViewHolder(View v, final Activity activity) {
             super(v);
             imageView = v.findViewById(R.id.imageView);
+            imageView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    DialogFragment imageDetailsFragment = ImageDetailFragment.newInstance(image);
+                    imageDetailsFragment.show(activity.getFragmentManager(), "RHI");
+                }
+            });
         }
     }
 
@@ -86,7 +94,7 @@ public class FlickrImageAdapter extends RecyclerView.Adapter<FlickrImageAdapter.
         View v = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.recycler_view_grid_item, parent, false);
 
-        ViewHolder vh = new ViewHolder(v);
+        ViewHolder vh = new ViewHolder(v, parentActivity);
         return vh;
     }
 
@@ -100,6 +108,7 @@ public class FlickrImageAdapter extends RecyclerView.Adapter<FlickrImageAdapter.
         GlideApp
                 .with(parentActivity)
                 .load(image.getThumbnailLink())
+                .placeholder(R.drawable.placeholder_image)
                 .into(holder.imageView);
     }
 
