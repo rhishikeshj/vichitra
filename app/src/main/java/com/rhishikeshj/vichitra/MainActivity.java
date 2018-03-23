@@ -37,14 +37,14 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        recyclerView = (RecyclerView) findViewById(R.id.my_recycler_view);
+        recyclerView = findViewById(R.id.my_recycler_view);
 
         // use this setting to improve performance if you know that changes
         // in content do not change the layout size of the RecyclerView
         recyclerView.setHasFixedSize(true);
 
         // use a linear layout manager
-        layoutManager = new AutoFitGridLayoutManager(this, 200);
+        layoutManager = new AutoFitGridLayoutManager(this, 400);
         recyclerView.setLayoutManager(layoutManager);
 
         // specify an adapter (see also next example)
