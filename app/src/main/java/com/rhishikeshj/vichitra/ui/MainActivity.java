@@ -1,63 +1,29 @@
-package com.rhishikeshj.vichitra;
+package com.rhishikeshj.vichitra.ui;
 
-import android.arch.lifecycle.Observer;
-import android.arch.lifecycle.ViewModelProviders;
+import android.app.SearchManager;
+import android.content.ComponentName;
+import android.content.Context;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.bumptech.glide.Glide;
-import com.rhishikeshj.vichitra.managers.ImageSearchManager;
-import com.rhishikeshj.vichitra.models.FlickrImage;
-import com.rhishikeshj.vichitra.ui.AutoFitGridLayoutManager;
-import com.rhishikeshj.vichitra.ui.FlickrImageAdapter;
-import com.rhishikeshj.vichitra.viewmodels.ImageSearchViewModel;
-
-import java.util.List;
+import com.rhishikeshj.vichitra.R;
 
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    RecyclerView recyclerView;
-    GridLayoutManager layoutManager;
-    FlickrImageAdapter adapter;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        recyclerView = findViewById(R.id.my_recycler_view);
-
-        // use this setting to improve performance if you know that changes
-        // in content do not change the layout size of the RecyclerView
-        recyclerView.setHasFixedSize(true);
-
-        // use a linear layout manager
-        layoutManager = new AutoFitGridLayoutManager(this, 400);
-        recyclerView.setLayoutManager(layoutManager);
-
-        // specify an adapter (see also next example)
-        adapter = new FlickrImageAdapter(this);
-        recyclerView.setAdapter(adapter);
-        recyclerView.setRecyclerListener(new RecyclerView.RecyclerListener() {
-            @Override
-            public void onViewRecycled(RecyclerView.ViewHolder holder) {
-                FlickrImageAdapter.ViewHolder photoViewHolder = (FlickrImageAdapter.ViewHolder) holder;
-                Glide.with(MainActivity.this).clear(photoViewHolder.imageView);
-            }
-        });
-
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -70,18 +36,6 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        ImageSearchManager searchManager = new ImageSearchManager(getApplicationContext());
-        ImageSearchViewModel imageSearchViewModel = ViewModelProviders.of(this).get(ImageSearchViewModel.class);
-        imageSearchViewModel.setImageSearchManager(searchManager);
-        imageSearchViewModel.getImagesForQuery("cat").observe(this, new Observer<List<FlickrImage>>() {
-            @Override
-            public void onChanged(@Nullable List<FlickrImage> flickrImages) {
-                for (FlickrImage image : flickrImages) {
-                    Log.d("MainActivity", "Image is " + image.title);
-                }
-                adapter.setImageList(flickrImages);
-            }
-        });
     }
 
     @Override
@@ -98,6 +52,13 @@ public class MainActivity extends AppCompatActivity
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
+
+        SearchManager searchManager =
+                (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+        SearchView searchView =
+                (SearchView) menu.findItem(R.id.search).getActionView();
+        searchView.setSearchableInfo(
+                searchManager.getSearchableInfo(new ComponentName(this, SearchResultsActivity.class)));
         return true;
     }
 
@@ -109,7 +70,7 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.search) {
             return true;
         }
 

@@ -10,7 +10,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.rhishikeshj.vichitra.GlideApp;
-import com.rhishikeshj.vichitra.ImageDetailFragment;
 import com.rhishikeshj.vichitra.R;
 import com.rhishikeshj.vichitra.models.FlickrImage;
 

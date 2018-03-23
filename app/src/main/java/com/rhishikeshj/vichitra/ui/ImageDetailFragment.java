@@ -1,4 +1,4 @@
-package com.rhishikeshj.vichitra;
+package com.rhishikeshj.vichitra.ui;
 
 import android.app.DialogFragment;
 import android.os.Bundle;
@@ -7,6 +7,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.rhishikeshj.vichitra.GlideApp;
+import com.rhishikeshj.vichitra.R;
 import com.rhishikeshj.vichitra.models.FlickrImage;
 
 import static com.bumptech.glide.request.RequestOptions.fitCenterTransform;

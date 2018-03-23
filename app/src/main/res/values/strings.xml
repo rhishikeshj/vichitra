@@ -1,10 +1,11 @@
 <resources>
     <string name="app_name">Vichitra</string>
     <string name="app_author_id">github/rhishikeshj</string>
-    
+
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <string name="action_settings">Settings</string>
+    <string name="action_search">Search Flickr Feed</string>
     <string name="flick_image_activity_description">Flick Image Details</string>
 </resources>
