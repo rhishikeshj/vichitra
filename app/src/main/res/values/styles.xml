@@ -6,9 +6,42 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorAccentLight">@color/colorAccentLight</item>
+        <item name="colorAccentDark">@color/colorAccentDark</item>
+
+    </style>
+
+    <style name="AppThemeLight" parent="AppTheme">
+        <!-- Customize your theme here. -->
+        <item name="android:windowAnimationStyle">@style/WindowAnimationTransition</item>
+        <item name="colorPrimary">@color/colorPrimaryThemeLight</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDarkThemeLight</item>
+        <item name="colorAccent">@color/colorAccentThemeLight</item>
+        <item name="colorAccentLight">@color/colorAccentLightThemeLight</item>
+        <item name="colorAccentDark">@color/colorAccentDarkThemeLight</item>
+    </style>
+
+    <style name="AppThemeDark" parent="AppTheme">
+        <!-- Customize your theme here. -->
+        <item name="android:windowAnimationStyle">@style/WindowAnimationTransition</item>
+        <item name="colorPrimary">@color/colorPrimaryThemeDark</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDarkThemeDark</item>
+        <item name="colorAccent">@color/colorAccentThemeDark</item>
+        <item name="colorAccentLight">@color/colorAccentLightThemeDark</item>
+        <item name="colorAccentDark">@color/colorAccentDarkThemeDark</item>
     </style>
 
     <style name="AppTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="AppThemeDark.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="AppThemeLight.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
     </style>
@@ -17,4 +50,8 @@
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
+    <style name="WindowAnimationTransition">
+        <item name="android:windowEnterAnimation">@android:anim/fade_in</item>
+        <item name="android:windowExitAnimation">@android:anim/fade_out</item>
+    </style>
 </resources>

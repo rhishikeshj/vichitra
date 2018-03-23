@@ -2,5 +2,20 @@
 <resources>
     <color name="colorPrimary">#4b64a6</color>
     <color name="colorPrimaryDark">#304fa3</color>
+    <color name="colorAccentDark">#d81b60</color>
     <color name="colorAccent">#c8297b</color>
+    <color name="colorAccentLight">#f06292</color>
+
+    <color name="colorPrimaryThemeLight">#a5d6a7</color>
+    <color name="colorPrimaryDarkThemeLight">#75a478</color>
+    <color name="colorAccentThemeLight">#4fc3f7</color>
+    <color name="colorAccentDarkThemeLight">#03a9f4</color>
+    <color name="colorAccentLightThemeLight">#b3e5fc</color>
+
+    <color name="colorPrimaryThemeDark">#795548</color>
+    <color name="colorPrimaryDarkThemeDark">#4b2c20</color>
+    <color name="colorAccentThemeDark">#81c784</color>
+    <color name="colorAccentDarkThemeDark">#4caf50</color>
+    <color name="colorAccentLightThemeDark">#c8e6c9</color>
+
 </resources>

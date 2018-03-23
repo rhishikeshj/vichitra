@@ -3,7 +3,9 @@ package com.rhishikeshj.vichitra.ui;
 import android.app.SearchManager;
 import android.content.ComponentName;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -22,7 +24,24 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        String currentTheme = preferences.getString("USE_THEME", "Default");
+        switch (currentTheme) {
+            case "Light":
+                setTheme(R.style.AppThemeLight_NoActionBar);
+                break;
+            case "Dark":
+                setTheme(R.style.AppThemeDark_NoActionBar);
+                break;
+            default:
+                setTheme(R.style.AppTheme_NoActionBar);
+                break;
+        }
+
+
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -70,9 +89,23 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.search) {
-            return true;
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        SharedPreferences.Editor prefEditor = preferences.edit();
+
+        if (id == R.id.action_dark_theme) {
+            prefEditor.putString("USE_THEME", "Dark");
+            prefEditor.commit();
+            recreate();
+        } else if (id == R.id.action_light_theme) {
+            prefEditor.putString("USE_THEME", "Light");
+            prefEditor.commit();
+            recreate();
+        } else if (id == R.id.action_default_theme) {
+            prefEditor.putString("USE_THEME", "Default");
+            prefEditor.commit();
+            recreate();
         }
+
 
         return super.onOptionsItemSelected(item);
     }
