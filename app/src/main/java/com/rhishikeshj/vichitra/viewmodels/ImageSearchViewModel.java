@@ -31,4 +31,16 @@ public class ImageSearchViewModel extends ViewModel {
 
         return images;
     }
+
+    public LiveData<List<FlickrImage>> getMoreImagesForQuery(String query) {
+        if (this.imageSearchManager == null) {
+            throw new IllegalStateException("Please initialize the ImageSearchManager for this view-model");
+        }
+        if (images != null) {
+            this.imageSearchManager.searchForMoreImages(query);
+        }
+
+        return images;
+    }
+
 }

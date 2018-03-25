@@ -24,11 +24,9 @@ public class ImageSearchNetworkManager {
     private final BlockingQueue<Runnable> workerQueue;
     private final ThreadPoolExecutor workerThreadPool;
     private final ImageService imageService;
-    private final ImageSearchNetworkListener listener;
 
-    public ImageSearchNetworkManager(ImageService imageService, ImageSearchNetworkListener listener) {
+    public ImageSearchNetworkManager(ImageService imageService) {
         this.imageService = imageService;
-        this.listener = listener;
         workerQueue = new LinkedBlockingQueue<Runnable>();
         workerThreadPool = new ThreadPoolExecutor(NUMBER_OF_CORES,
                 NUMBER_OF_CORES,
@@ -37,7 +35,7 @@ public class ImageSearchNetworkManager {
                 workerQueue);
     }
 
-    public void searchForImages(final String query) {
+    public void searchForImages(final String query, final ImageSearchNetworkListener listener) {
         workerThreadPool.execute(new Runnable() {
             @Override
             public void run() {

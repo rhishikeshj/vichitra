@@ -25,6 +25,8 @@ import java.util.List;
  */
 
 public class SearchResultsActivity extends AppCompatActivity {
+    private boolean isLoading;
+    private String query;
     private FlickrImageAdapter adapter;
     private ImageSearchViewModel imageSearchViewModel;
 
@@ -54,9 +56,8 @@ public class SearchResultsActivity extends AppCompatActivity {
         recyclerView.setHasFixedSize(true);
 
         // use a linear layout manager
-        GridLayoutManager layoutManager = new AutoFitGridLayoutManager(this, 400);
+        final GridLayoutManager layoutManager = new AutoFitGridLayoutManager(this, 400);
         recyclerView.setLayoutManager(layoutManager);
-
         // specify an adapter (see also next example)
         adapter = new FlickrImageAdapter(this);
         recyclerView.setAdapter(adapter);
@@ -68,6 +69,37 @@ public class SearchResultsActivity extends AppCompatActivity {
             }
         });
 
+        final AppCompatActivity appCompatActivity = this;
+        recyclerView.setOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+            }
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                int visibleItemCount = layoutManager.getChildCount();
+                int totalItemCount = layoutManager.getItemCount();
+                int firstVisibleItemPosition = layoutManager.findFirstVisibleItemPosition();
+
+                if (!isLoading) {
+                    if ((visibleItemCount + firstVisibleItemPosition) >= totalItemCount
+                            && firstVisibleItemPosition >= 0
+                            && totalItemCount >= 20) {
+                        isLoading = true;
+                        imageSearchViewModel.getMoreImagesForQuery(query).observe(appCompatActivity,
+                                new Observer<List<FlickrImage>>() {
+                                    @Override
+                                    public void onChanged(@Nullable List<FlickrImage> flickrImages) {
+                                        adapter.setImageList(flickrImages);
+                                        isLoading = false;
+                                    }
+                                });
+                    }
+                }
+            }
+        });
         ImageSearchManager searchManager = new ImageSearchManager(getApplicationContext());
         imageSearchViewModel = ViewModelProviders.of(this).get(ImageSearchViewModel.class);
         imageSearchViewModel.setImageSearchManager(searchManager);
@@ -81,7 +113,7 @@ public class SearchResultsActivity extends AppCompatActivity {
 
     private void handleIntent(Intent searchIntent) {
         if (Intent.ACTION_SEARCH.equals(searchIntent.getAction())) {
-            String query = searchIntent.getStringExtra(SearchManager.QUERY);
+            query = searchIntent.getStringExtra(SearchManager.QUERY);
             imageSearchViewModel.getImagesForQuery(query).observe(this, new Observer<List<FlickrImage>>() {
                 @Override
                 public void onChanged(@Nullable List<FlickrImage> flickrImages) {
