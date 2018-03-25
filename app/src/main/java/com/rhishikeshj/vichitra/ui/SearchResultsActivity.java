@@ -8,6 +8,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -24,7 +25,7 @@ import java.util.List;
  * Created by mjolnir on 23/03/18.
  */
 
-public class SearchResultsActivity extends AppCompatActivity {
+public class SearchResultsActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener {
     private boolean isLoading;
     private String query;
     private FlickrImageAdapter adapter;
@@ -49,6 +50,9 @@ public class SearchResultsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.search_results_activity);
+        SwipeRefreshLayout refreshLayout = findViewById(R.id.my_refresh_layout);
+        refreshLayout.setOnRefreshListener(this);
+
         RecyclerView recyclerView = findViewById(R.id.my_recycler_view);
 
         recyclerView.setHasFixedSize(true);
@@ -117,5 +121,18 @@ public class SearchResultsActivity extends AppCompatActivity {
                 }
             });
         }
+    }
+
+    @Override
+    public void onRefresh() {
+        final SwipeRefreshLayout refreshLayout = findViewById(R.id.my_refresh_layout);
+        refreshLayout.setRefreshing(true);
+        imageSearchViewModel.getImagesForQuery(query).observe(this, new Observer<List<FlickrImage>>() {
+            @Override
+            public void onChanged(@Nullable List<FlickrImage> flickrImages) {
+                adapter.setImageList(flickrImages);
+                refreshLayout.setRefreshing(false);
+            }
+        });
     }
 }
