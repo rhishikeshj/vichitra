@@ -22,6 +22,9 @@ import java.util.List;
  * Created by mjolnir on 20/03/18.
  */
 
+/**
+ * Network service to fetch images from the Flickr Feed API.
+ */
 public class FlickrImageService implements ImageService {
 
     private static final String TAG = FlickrImageService.class.getName();

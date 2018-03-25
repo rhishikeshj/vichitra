@@ -9,5 +9,11 @@ import java.util.List;
  */
 
 public interface ImageService {
+    /**
+     * API for getting images for a given query
+     *
+     * @param query
+     * @return
+     */
     List<FlickrImage> getImagesForQuery(String query);
 }

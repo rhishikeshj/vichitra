@@ -13,6 +13,11 @@ import java.util.concurrent.TimeUnit;
  * Created by mjolnir on 20/03/18.
  */
 
+/**
+ * Image search network manager.
+ * This class is reponsible for managing the pool of threads
+ * on which the Image fetch requests are run.
+ */
 public class ImageSearchNetworkManager {
     private static final String TAG = ImageSearchNetworkManager.class.getName();
 
@@ -35,6 +40,12 @@ public class ImageSearchNetworkManager {
                 workerQueue);
     }
 
+    /**
+     * API to search for images on a threadpool
+     *
+     * @param query
+     * @param listener
+     */
     public void searchForImages(final String query, final ImageSearchNetworkListener listener) {
         workerThreadPool.execute(new Runnable() {
             @Override

@@ -19,13 +19,14 @@ import java.util.List;
  * Created by mjolnir on 20/03/18.
  */
 
+/**
+ * Recycler view adapter for showing the Flickr images
+ * in a RecyclerView
+ */
 public class FlickrImageAdapter extends RecyclerView.Adapter<FlickrImageAdapter.ViewHolder> {
     private List<FlickrImage> imageList;
     private Activity parentActivity;
 
-    // Provide a reference to the views for each data item
-    // Complex data items may need more than one view per item, and
-    // you provide access to all the views for a data item in a view holder
     public static class ViewHolder extends RecyclerView.ViewHolder {
         private FlickrImage image;
 
@@ -44,7 +45,6 @@ public class FlickrImageAdapter extends RecyclerView.Adapter<FlickrImageAdapter.
         }
     }
 
-    // Provide a suitable constructor (depends on the kind of dataset)
     public FlickrImageAdapter(Activity parent) {
         parentActivity = parent;
     }
@@ -85,8 +85,6 @@ public class FlickrImageAdapter extends RecyclerView.Adapter<FlickrImageAdapter.
         }
     }
 
-
-    // Create new views (invoked by the layout manager)
     @Override
     public FlickrImageAdapter.ViewHolder onCreateViewHolder(ViewGroup parent,
                                                             int viewType) {
@@ -97,11 +95,9 @@ public class FlickrImageAdapter extends RecyclerView.Adapter<FlickrImageAdapter.
         return vh;
     }
 
-    // Replace the contents of a view (invoked by the layout manager)
+
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        // - get element from your dataset at this position
-        // - replace the contents of the view with that element
         FlickrImage image = imageList.get(position);
         holder.image = image;
         GlideApp
@@ -112,7 +108,6 @@ public class FlickrImageAdapter extends RecyclerView.Adapter<FlickrImageAdapter.
                 .into(holder.imageView);
     }
 
-    // Return the size of your dataset (invoked by the layout manager)
     @Override
     public int getItemCount() {
         return imageList == null ? 0 : imageList.size();

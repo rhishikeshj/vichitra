@@ -15,6 +15,11 @@ import java.util.List;
  * Created by mjolnir on 20/03/18.
  */
 
+/**
+ * Image search manager entity.
+ * Responsibilities of this class include talking to the image network service
+ * and DB to store images returned for a query.
+ */
 public class ImageSearchManager {
     private static final String TAG = ImageSearchManager.class.getName();
 
@@ -22,6 +27,11 @@ public class ImageSearchManager {
     private final ImageDatabase imageDatabase;
     private final ImageSearchNetworkManager imageSearchNetworkManager;
 
+    /**
+     * Constructor
+     *
+     * @param appContext
+     */
     public ImageSearchManager(Context appContext) {
         imageService = new FlickrImageService();
 
@@ -30,6 +40,12 @@ public class ImageSearchManager {
                 ImageDatabase.class, "vichitra-db").build();
     }
 
+    /**
+     * API to search for images given a query.
+     * This method will replace all existing data for a query with new incoming data.
+     *
+     * @param query
+     */
     public void searchForImages(final String query) {
         final ImageSearchManager manager = this;
         imageSearchNetworkManager.searchForImages(query, new ImageSearchNetworkListener() {
@@ -45,6 +61,12 @@ public class ImageSearchManager {
         });
     }
 
+    /**
+     * API to search for more images for a given query.
+     * This API will only add to the existing data in the DB
+     *
+     * @param query
+     */
     public void searchForMoreImages(final String query) {
         final ImageSearchManager manager = this;
         imageSearchNetworkManager.searchForImages(query, new ImageSearchNetworkListener() {
@@ -60,6 +82,12 @@ public class ImageSearchManager {
         });
     }
 
+    /**
+     * Return images from the DB.
+     *
+     * @param query
+     * @return
+     */
     public LiveData<List<FlickrImage>> getCachedImages(final String query) {
         return imageDatabase.flickrImageDao().getAllImages(query);
     }

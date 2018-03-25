@@ -10,7 +10,18 @@ import java.util.List;
 
 public interface ImageSearchNetworkListener {
 
+    /**
+     * Success handler for the Image Service.
+     *
+     * @param images
+     * @param query
+     */
     void imagesFetchedForQuery(List<FlickrImage> images, String query);
 
+    /**
+     * Error handler for the Image service.
+     *
+     * @param query
+     */
     void imagesNotFetchedForQuery(String query);
 }

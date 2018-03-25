@@ -51,14 +51,10 @@ public class SearchResultsActivity extends AppCompatActivity {
         setContentView(R.layout.search_results_activity);
         RecyclerView recyclerView = findViewById(R.id.my_recycler_view);
 
-        // use this setting to improve performance if you know that changes
-        // in content do not change the layout size of the RecyclerView
         recyclerView.setHasFixedSize(true);
 
-        // use a linear layout manager
         final GridLayoutManager layoutManager = new AutoFitGridLayoutManager(this, 400);
         recyclerView.setLayoutManager(layoutManager);
-        // specify an adapter (see also next example)
         adapter = new FlickrImageAdapter(this);
         recyclerView.setAdapter(adapter);
         recyclerView.setRecyclerListener(new RecyclerView.RecyclerListener() {
