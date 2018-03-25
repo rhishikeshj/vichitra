@@ -15,6 +15,7 @@ import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -31,7 +32,7 @@ public class FlickrImageService implements ImageService {
         URL url;
         HttpURLConnection urlConnection = null;
         String server_response = null;
-
+        List<FlickrImage> imagesForQuery = new ArrayList<>();
         try {
             url = new URL("https://api.flickr.com/services/feeds/photos_public.gne?tags="
                     + query
@@ -52,13 +53,15 @@ public class FlickrImageService implements ImageService {
 
         Type listType = new TypeToken<List<FlickrImage>>() {
         }.getType();
-        server_response = server_response.substring(FLICKR_API_PREFIX_LENGTH,
-                server_response.length() - 1);
+        if (server_response != null) {
+            server_response = server_response.substring(FLICKR_API_PREFIX_LENGTH,
+                    server_response.length() - 1);
 
-        JsonObject flickrFeed = new JsonParser().parse(server_response).getAsJsonObject();
-        JsonArray flickrImages = flickrFeed.getAsJsonArray("items");
-
-        return new Gson().fromJson(flickrImages, listType);
+            JsonObject flickrFeed = new JsonParser().parse(server_response).getAsJsonObject();
+            JsonArray flickrImages = flickrFeed.getAsJsonArray("items");
+            imagesForQuery = new Gson().fromJson(flickrImages, listType);
+        }
+        return imagesForQuery;
     }
 
     private String readStream(InputStream in) {

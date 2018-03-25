@@ -108,6 +108,7 @@ public class FlickrImageAdapter extends RecyclerView.Adapter<FlickrImageAdapter.
                 .with(parentActivity)
                 .load(image.getThumbnailLink())
                 .placeholder(R.drawable.placeholder_image)
+                .centerCrop()
                 .into(holder.imageView);
     }
 
